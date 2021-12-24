@@ -1,4 +1,5 @@
 ﻿using Ookii.Dialogs.Wpf;
+using PhotoSorting.Models;
 using PhotoSorting.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,17 @@ namespace PhotoSorting
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowVM _context = new MainWindowVM();
+        MainWindowVM _context;
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public MainWindow(DataContext context)
+        {
+            InitializeComponent();
+            _context = new MainWindowVM(context);
             DataContext = _context;
         }
 

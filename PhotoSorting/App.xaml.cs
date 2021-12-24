@@ -18,6 +18,8 @@ namespace PhotoSorting
     /// </summary>
     public partial class App : Application
     {
+        // read this:
+        //https://marcominerva.wordpress.com/2019/03/19/using-entity-framework-core-with-wpf-on-net-core-3-0/
         public IServiceProvider ServiceProvider { get; private set; }
 
         public IConfiguration Configuration { get; private set; }

@@ -14,6 +14,7 @@ namespace PhotoSorting.ViewModels
     {
         private string _dirPath = @"c:\";
         private IList<Photo> _photos = new List<Photo>();
+        private readonly DataContext _context;
 
         public string DirectoryPath
         {
@@ -23,6 +24,11 @@ namespace PhotoSorting.ViewModels
                 _dirPath = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        public MainWindowVM(DataContext context)
+        {
+            _context = context;
         }
 
         public async Task Analise()
