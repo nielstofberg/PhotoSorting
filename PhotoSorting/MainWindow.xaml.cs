@@ -1,20 +1,8 @@
 ﻿using Ookii.Dialogs.Wpf;
 using PhotoSorting.Models;
 using PhotoSorting.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PhotoSorting
 {
@@ -24,11 +12,6 @@ namespace PhotoSorting
     public partial class MainWindow : Window
     {
         MainWindowVM _context;
-
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
 
         public MainWindow(DataContext context)
         {
@@ -49,6 +32,20 @@ namespace PhotoSorting
         private async void StartAnalise(object sender, RoutedEventArgs e)
         {
             await _context.Analise();
+        }
+
+        private void CancelProcess(object sender, RoutedEventArgs e)
+        {
+            _context.CancelProcess();
+        }
+
+        private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (e.AddedCells.Count > 0)
+            {
+                Photo ph = (Photo)e.AddedCells[0].Item;
+                _context.SetImage(ph);
+            }
         }
     }
 }

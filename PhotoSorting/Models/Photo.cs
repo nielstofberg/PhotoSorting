@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -12,13 +14,17 @@ namespace PhotoSorting.Models
 {
     public class Photo
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        public DateTime DateTaken { get; set; }
+        public DateTime? DateTaken { get; set; } = null;
         public string CameraMake { get; set; }
         public string CameraModel { get; set; }
         public long Size { get; set; }
+        public DateTime? DateCreated { get; set; } = null;
+        public DateTime? DateModified { get; set; } = null;
+        public DateTime? DateAccessed { get; set; } = null;
 
         public Photo()
         {
@@ -42,15 +48,32 @@ namespace PhotoSorting.Models
                 using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
                 using (Image myImage = Image.FromStream(fs, false, false))
                 {
-                    PropertyItem propItem = await Task.Run(() => myImage.GetPropertyItem(PropertyTags.DATE_TAKEN)); //36867);
-                    string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                    var dt = DateTime.Parse(dateTaken);
-
-                    propItem = myImage.GetPropertyItem(PropertyTags.CAMERA_MAKE);
-                    var make = Encoding.UTF8.GetString(propItem.Value);
-
-                    propItem = myImage.GetPropertyItem(PropertyTags.CAMERA_MODEL);
-                    var model = Encoding.UTF8.GetString(propItem.Value);
+                    PropertyItem propItem;
+                    DateTime? dt = null;
+                    string make = string.Empty;
+                    string model = string.Empty;
+                    try
+                    {
+                        propItem = await Task.Run(() => myImage.GetPropertyItem(PropertyTags.DATE_TAKEN)); //36867);
+                        string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                        dt = DateTime.Parse(dateTaken);
+                    }
+                    catch
+                    { }
+                    try
+                    {
+                        propItem = myImage.GetPropertyItem(PropertyTags.CAMERA_MAKE);
+                        make = Encoding.UTF8.GetString(propItem.Value);
+                    }
+                    catch
+                    { }
+                    try
+                    {
+                        propItem = myImage.GetPropertyItem(PropertyTags.CAMERA_MODEL);
+                        model = Encoding.UTF8.GetString(propItem.Value);
+                    }
+                    catch
+                    { }
 
                     photo = new Photo
                     {
@@ -60,7 +83,10 @@ namespace PhotoSorting.Models
                         DateTaken = dt,
                         CameraMake = make,
                         CameraModel = model,
-                        Size = fi.Length
+                        Size = fi.Length,
+                        DateCreated = fi.CreationTime,
+                        DateModified = fi.LastWriteTime,
+                        DateAccessed = fi.LastAccessTime
                     };
                 }
             }

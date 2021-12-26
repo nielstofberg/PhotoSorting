@@ -5,15 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoSorting"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="26" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-		<Label >Select Folder</Label>
-		<TextBox Margin="87,0,330,0" Text="{Binding DirectoryPath}" IsReadOnly="True" />
-		<Button Content="Select Folder" HorizontalAlignment="Left" Margin="489,0,0,0" VerticalAlignment="Center" Width="75" Click="button_Click" />
-		<Button Content="Get Items" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" Width="75" Click="StartAnalise" />
-	</Grid>
+        Title="MainWindow" Height="447" Width="866">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal" >
+                <Label Margin="5,0,2,0" >Select Folder</Label>
+                <TextBox Margin="2,0,5,0" Text="{Binding DirectoryPath}" Width="500" IsReadOnly="True" />
+                <Button Content="Select Folder" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="button_Click" />
+            </StackPanel>
+            <Button Content="Process" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center" Width="75" Click="StartAnalise" />
+        </Grid>
+        <Label Grid.ColumnSpan="2" Margin="5,0,0,0" Grid.Row="2" HorizontalAlignment="Left" Content="{Binding Progress}" />
+        <Button Grid.Column="1" Grid.Row="2" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center" Width="50" Click="CancelProcess" />
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Photos}" AutoGenerateColumns="False" SelectedCellsChanged="DataGrid_SelectedCellsChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" />
+                <DataGridTextColumn Header="File Name" Binding="{Binding Name}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Path" Binding="{Binding Path}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Date Taken" Binding="{Binding DateTaken, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Date Created" Binding="{Binding DateCreated, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Date Modified" Binding="{Binding DateModified, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Date Accessed" Binding="{Binding DateAccessed, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Image Grid.Row="1" Grid.Column="1" Source="{Binding ImageSrc}" />
+    </Grid>
 </Window>

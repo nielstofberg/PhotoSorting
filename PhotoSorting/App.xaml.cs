@@ -27,14 +27,16 @@ namespace PhotoSorting
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             Configuration = builder.Build();
 
+            // Create a service collection and configure our dependencies
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
 
+            // Build the our IServiceProvider and set our static reference to it
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
@@ -43,6 +45,7 @@ namespace PhotoSorting
 
         private void ConfigureServices(IServiceCollection services)
         {
+            //services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddDbContext<DataContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
 
