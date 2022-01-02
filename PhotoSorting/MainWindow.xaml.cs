@@ -29,9 +29,24 @@ namespace PhotoSorting
             }
         }
 
-        private async void StartAnalise(object sender, RoutedEventArgs e)
+        private async void CollectImages (object sender, RoutedEventArgs e)
         {
-            await _context.Analise();
+            await _context.CollectImages();
+        }
+
+        private async void FindDoubles(object sender, RoutedEventArgs e)
+        {
+            await _context.IdentifyDoubles();
+        }
+
+        private async void MarkDelete(object sender, RoutedEventArgs e)
+        {
+            await _context.MarkDelete();
+        }
+
+        private async void DeleteDoubles(object sender, RoutedEventArgs e)
+        {
+            await _context.DeleteDoubles();
         }
 
         private void CancelProcess(object sender, RoutedEventArgs e)
@@ -39,12 +54,21 @@ namespace PhotoSorting
             _context.CancelProcess();
         }
 
-        private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        private void PhotoSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             if (e.AddedCells.Count > 0)
             {
                 Photo ph = (Photo)e.AddedCells[0].Item;
                 _context.SetImage(ph);
+            }
+        }
+
+        private void VideoSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (e.AddedCells.Count > 0)
+            {
+                VideoFile vid = (VideoFile)e.AddedCells[0].Item;
+                _context.SetVideo(vid);
             }
         }
     }

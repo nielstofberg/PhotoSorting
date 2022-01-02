@@ -25,10 +25,20 @@ namespace PhotoSorting.Models
         public DateTime? DateCreated { get; set; } = null;
         public DateTime? DateModified { get; set; } = null;
         public DateTime? DateAccessed { get; set; } = null;
+        public bool ToDelete { get; set; } = false;
+        public bool Deleted { get; set; } = false;
+        public int? DoubleSetId { get; set; }
 
         public Photo()
         {
         }
+
+        public static readonly string[] PHOTO_EXT = new string[]
+        {
+            ".jpg",
+            ".bmp",
+            ".png"
+        };
 
         //we init this once so that if the function is repeatedly called
         //it isn't stressing the garbage man
@@ -37,9 +47,9 @@ namespace PhotoSorting.Models
         //retrieves the datetime WITHOUT loading the whole image
         public static async Task<Photo> GetPhoto(FileInfo fi)
         {
-            if (fi.Extension.ToLower() != ".jpg")
+            if (!PHOTO_EXT.Contains(fi.Extension.ToLower()))
             {
-                throw new Exception("Not a jpeg image!");
+                throw new Exception($"{fi.Extension} is not an image file!");
             }
             Photo photo = null;
             string path = fi.FullName;

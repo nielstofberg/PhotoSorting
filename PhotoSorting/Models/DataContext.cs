@@ -11,6 +11,8 @@ namespace PhotoSorting.Models
     public class DataContext : DbContext
     {
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<VideoFile> VideoFiles { get; set; }
+        public DbSet<DoubleSet> DoubleSets { get; set; }
 
         public DataContext()
         {

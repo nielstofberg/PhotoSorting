@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoSorting.Models;
 
 namespace PhotoSorting.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211227101203_MakePreferredOptional")]
+    partial class MakePreferredOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,50 +89,6 @@ namespace PhotoSorting.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("PhotoSorting.Models.VideoFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("DoubleSetId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Length")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Path")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Size")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("ToDelete")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoubleSetId");
-
-                    b.ToTable("VideoFiles");
-                });
-
             modelBuilder.Entity("PhotoSorting.Models.Photo", b =>
                 {
                     b.HasOne("PhotoSorting.Models.DoubleSet", null)
@@ -138,18 +96,9 @@ namespace PhotoSorting.Migrations
                         .HasForeignKey("DoubleSetId");
                 });
 
-            modelBuilder.Entity("PhotoSorting.Models.VideoFile", b =>
-                {
-                    b.HasOne("PhotoSorting.Models.DoubleSet", null)
-                        .WithMany("VideoFiles")
-                        .HasForeignKey("DoubleSetId");
-                });
-
             modelBuilder.Entity("PhotoSorting.Models.DoubleSet", b =>
                 {
                     b.Navigation("Photos");
-
-                    b.Navigation("VideoFiles");
                 });
 #pragma warning restore 612, 618
         }
